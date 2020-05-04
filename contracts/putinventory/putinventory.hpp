@@ -3,6 +3,7 @@
 #include <eosio/asset.hpp>
 #include <eosio/symbol.hpp>
 #include <eosio/eosio.hpp>
+#include <eosio/crypto.hpp>
 #include <string>
 #include <vector>
 
@@ -23,14 +24,20 @@ CONTRACT putinventory: public contract {
         ACTION deletekey(const name& owner, const string& key);
 
         TABLE keyval {
+            name      owner;
             string    key;
             string    value;
 
-            string primary_key()const { return key; }
+            uint64_t primary_key()const { return owner.value; }
+            checksum256 get_checksum256_key()const {
+                return putinventory::get_checksum256_key(key);
+            }
         };
 
-        typedef eosio::multi_index< "keyval"_n, keyval > keyvals;
+        typedef eosio::multi_index<"keyval"_n, keyval, indexed_by<"byhash"_n, const_mem_fun<keyval, checksum256, &keyval::get_checksum256_key>>> keyvals;
 
-      private:
-      
+    private:
+        static checksum256 get_checksum256_key(const string& key) {
+            return sha256(key.c_str(), key.size());
+        }
 };
