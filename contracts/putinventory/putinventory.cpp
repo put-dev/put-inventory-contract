@@ -2,7 +2,7 @@
 
 ACTION putinventory::insertkey(const name& owner, const string& key, const string& value)
 {
-    require_auth( owner );
+    require_auth( has_auth(owner) ? owner : _self );
     keyvals keyvalstable(_self, _self.value);
     keyvalstable.emplace(owner, [&]( auto& d ) {
         d.owner = owner;
