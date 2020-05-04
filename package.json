@@ -1,0 +1,55 @@
+{
+  "name": "put-inventory-contract",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build-docker": "docker build -t eosio.cdt:1.7.0 docker",
+    "build-contract": "sh docker/eosio-cpp.sh",
+    "build-putinventory": "npm run build-contract -- putinventory putinventory",
+    "build-contracts": "npm run build-putinventory",
+    "test": "mocha --bail --exit tests/**/*.test.js",
+    "test-single": "mocha --bail --exit",
+    "testnet": "node scripts/testnet.js",
+    "deploy": "node scripts/deploy.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/runtime": "^7.8.3",
+    "@scatterjs/core": "^2.7.51",
+    "@scatterjs/eosjs2": "^1.5.33",
+    "dockerator": "^0.3.6",
+    "dotenv": "^8.2.0",
+    "eosjs": "^20.0.3",
+    "dfuseup": "operanditech/dfuseup",
+    "config": "^3.2.5",
+    "node-fetch": "^2.6.0",
+    "node-persist": "3.0.5"
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^13.5.0",
+    "@types/node-fetch": "^2.5.4",
+    "@types/text-encoding": "^0.0.35",
+    "mocha": "^7.0.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {
+      "no-console": "off",
+      "no-unused-vars": "off"
+    },
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  }
+}
