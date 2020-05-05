@@ -68,6 +68,65 @@ describe('Put contract', () => {
 
     it('load seed data', async () => {
       const nrUsers = 5;
-      await seed(dfuseUp, proxies, nrUsers);
+      await seed(dfuseUp, proxies, nrUsers, CONTRACTS_KEY_PUB);
     }).timeout(8000)
+
+    it('Insert key', async () => {
+      await proxies[putContract].insertkey({
+        owner: 'putuseruser1',
+        key: 'max_signups',
+        value: '100'
+      }, [{actor: 'putuseruser1', permission: 'active'}]);
+
+      await proxies[putContract].insertkey({
+        owner: 'putuseruser1',
+        key: 'signup_uri',
+        value: 'https://example.tld'
+      }, [{actor: 'putuseruser1', permission: 'active'}]);
+
+      await proxies[putContract].insertkey({
+        owner: 'putuseruser2',
+        key: 'encrypted_hash',
+        value: '4db268bbaad225a0a'
+      }, [{actor: 'putuseruser2', permission: 'active'}]);
+
+      const result = await proxies[putContract].getKeyval({scope:'putuseruser1'});
+      const result1 = await proxies[putContract].getKeyval({scope:'putuseruser2'});
+      debugResults([{keyval:result}, {keyval1:result1}]);
+    })
+
+    it('Update key', async () => {
+      await proxies[putContract].updatekey({
+        owner: 'putuseruser1',
+        key: 'max_signups',
+        value: '200'
+      }, [{actor: 'putuseruser1', permission: 'active'}]);
+
+      const result = await proxies[putContract].getKeyval({scope:'putuseruser1'});
+      const result1 = await proxies[putContract].getKeyval({scope:'putuseruser2'});
+      debugResults([{keyval:result}, {keyval1:result1}]);
+    })
+
+    it('Rekey', async () => {
+      await proxies[putContract].rekey({
+        owner: 'putuseruser1',
+        key: 'max_signups',
+        new_key: 'max_signups2'
+      }, [{actor: 'putuseruser1', permission: 'active'}]);
+
+      const result = await proxies[putContract].getKeyval({scope:'putuseruser1'});
+      const result1 = await proxies[putContract].getKeyval({scope:'putuseruser2'});
+      debugResults([{keyval:result}, {keyval1:result1}]);
+    })
+
+    it('Delete key', async () => {
+      await proxies[putContract].deletekey({
+        owner: 'putuseruser1',
+        key: 'max_signups2'
+      }, [{actor: 'putuseruser1', permission: 'active'}]);
+
+      const result = await proxies[putContract].getKeyval({scope:'putuseruser1'});
+      const result1 = await proxies[putContract].getKeyval({scope:'putuseruser2'});
+      debugResults([{keyval:result}, {keyval1:result1}]);
+    })
   })

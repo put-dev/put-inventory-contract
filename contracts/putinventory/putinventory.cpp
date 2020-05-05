@@ -3,9 +3,12 @@
 ACTION putinventory::insertkey(const name& owner, const string& key, const string& value)
 {
     require_auth( has_auth(owner) ? owner : _self );
-    keyvals keyvalstable(_self, _self.value);
+    keyvals keyvalstable(_self, owner.value);
+    const auto& keyvals_index = keyvalstable.get_index<name("byhash")>();
+    const auto& keyval_itr = keyvals_index.find( putinventory::get_checksum256_key(key) );
+    check(keyval_itr == keyvals_index.end(), "cannot insert already existing key");
     keyvalstable.emplace(owner, [&]( auto& d ) {
-        d.owner = owner;
+        d.id = keyvalstable.available_primary_key();
         d.key = key;
         d.value = value;
     });
@@ -14,7 +17,7 @@ ACTION putinventory::insertkey(const name& owner, const string& key, const strin
 ACTION putinventory::updatekey(const name& owner, const string& key, const string& value)
 {
     require_auth( owner );
-    keyvals keyvalstable(_self, _self.value);
+    keyvals keyvalstable(_self, owner.value);
     const auto& keyvals_index = keyvalstable.get_index<name("byhash")>();
     const auto& keyval = keyvals_index.get( putinventory::get_checksum256_key(key), "key not found" );
     keyvalstable.modify(keyval, owner, [&]( auto& d ) {
@@ -27,7 +30,7 @@ ACTION putinventory::rekey(const name& owner, const string& key, const string& n
     require_auth( owner );
     check(key != new_key, "cannot rekey to same key");
 
-    keyvals keyvalstable(_self, _self.value);
+    keyvals keyvalstable(_self, owner.value);
     const auto& keyvals_index = keyvalstable.get_index<name("byhash")>();
     const auto& keyval = keyvals_index.get( putinventory::get_checksum256_key(key), "key not found" );
     const auto& keyval_new_itr = keyvals_index.find( putinventory::get_checksum256_key(new_key) );
@@ -40,7 +43,7 @@ ACTION putinventory::rekey(const name& owner, const string& key, const string& n
 ACTION putinventory::deletekey(const name& owner, const string& key)
 {
     require_auth( owner );
-    keyvals keyvalstable(_self, _self.value);
+    keyvals keyvalstable(_self, owner.value);
     const auto& keyvals_index = keyvalstable.get_index<name("byhash")>();
     const auto& keyval = keyvals_index.get( putinventory::get_checksum256_key(key), "key not found" );
     keyvalstable.erase(keyval);

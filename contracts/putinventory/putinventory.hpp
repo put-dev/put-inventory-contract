@@ -24,11 +24,11 @@ CONTRACT putinventory: public contract {
         ACTION deletekey(const name& owner, const string& key);
 
         TABLE keyval {
-            name      owner;
+            uint64_t  id;
             string    key;
             string    value;
 
-            uint64_t primary_key()const { return owner.value; }
+            uint64_t primary_key()const { return id; }
             checksum256 get_checksum256_key()const {
                 return putinventory::get_checksum256_key(key);
             }
