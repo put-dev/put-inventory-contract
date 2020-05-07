@@ -61,7 +61,7 @@ async function main() {
     let proxies = {};
     proxies['eosio'] = await ContractProxy(dfuseUp.morph.eos, 'eosio');
     proxies['eosio.token'] = await ContractProxy(dfuseUp.morph.eos, 'eosio.token');
-    proxies[putContract] = await ContractProxy(dfuseUp.morph.eos, dgoodsContract);
+    proxies[putContract] = await ContractProxy(dfuseUp.morph.eos, putContract);
 
     await seed(dfuseUp, proxies, 5, config.get('testnet.publickey'));
 
