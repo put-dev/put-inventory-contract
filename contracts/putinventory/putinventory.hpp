@@ -18,23 +18,26 @@ CONTRACT putinventory: public contract {
             : contract(receiver, code, ds) {
         }
 
-        ACTION insertkey(const name& owner, const string& key, const string& value);
-        ACTION updatekey(const name& owner, const string& key, const string& value);
-        ACTION rekey(const name& owner, const string& key, const string& new_key);
-        ACTION deletekey(const name& owner, const string& key);
+        ACTION insertkey(const name& owner, const uint64_t&  category_id, const string& key, const string& value);
+        ACTION updatekey(const name& owner, const uint64_t&  category_id, const string& key, const string& value);
+        ACTION rekey    (const name& owner, const uint64_t&  category_id, const string& key, const string& new_key);
+        ACTION deletekey(const name& owner, const uint64_t&  category_id, const string& key);
 
         TABLE keyval {
             uint64_t  id;
+            uint32_t  category_id;
             string    key;
             string    value;
 
             uint64_t primary_key()const { return id; }
             checksum256 get_checksum256_key()const {
-                return putinventory::get_checksum256_key(key);
+                return putinventory::get_checksum256_key(to_string(category_id) + "-" + key);
             }
         };
 
-        typedef eosio::multi_index<"keyval"_n, keyval, indexed_by<"byhash"_n, const_mem_fun<keyval, checksum256, &keyval::get_checksum256_key>>> keyvals;
+        typedef eosio::multi_index<"keyval"_n, keyval, 
+            indexed_by<"bycatkey"_n, const_mem_fun<keyval, checksum256, &keyval::get_checksum256_key>>
+        > keyvals;
 
     private:
         static checksum256 get_checksum256_key(const string& key) {

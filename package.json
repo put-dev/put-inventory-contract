@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build-docker": "docker build -t eosio.cdt:1.7.0 docker",
-    "build-contract": "sh docker/eosio-cpp.sh",
-    "build-putinventory": "npm run build-contract -- putinventory putinventory",
+    "build-putinventory": "dfuseup compile contracts/putinventory/putinventory.cpp contracts/putinventory/putinventory.wasm -c putinventory",
     "build-contracts": "npm run build-putinventory",
     "test": "mocha --bail --exit tests/**/*.test.js",
     "test-single": "mocha --bail --exit",
