@@ -52,9 +52,10 @@ async function main() {
 
   let proxies = {};
   const putContract = 'putinventory';
+  const pubKey = config.get('testnet.publickey');
 
   try {
-    await dfuseUp.createAccount(putContract, config.get('testnet.publickey'))
+    await dfuseUp.createAccount(putContract, pubKey)
     await dfuseUp.setContract(putContract, `./contracts/putinventory/putinventory.wasm`)
     await (await dfuseUp.giveCodeActivePermission(putContract, putContract))
 
@@ -63,7 +64,14 @@ async function main() {
     proxies['eosio.token'] = await ContractProxy(dfuseUp.morph.eos, 'eosio.token');
     proxies[putContract] = await ContractProxy(dfuseUp.morph.eos, putContract);
 
-    await seed(dfuseUp, proxies, 5, config.get('testnet.publickey'));
+    await dfuseUp.createAccount('putcopayment', pubKey)
+    await proxies['eosio.token'].issue({
+        to: 'putcopayment', 
+        quantity: '100000.0000 EOS', 
+        memo: 'Initial funds' 
+    }, [{actor: 'eosio.token', permission: 'active'}]);
+
+    await seed(dfuseUp, proxies, 5, pubKey);
 
   } catch(ex) {
     console.log(ex);
