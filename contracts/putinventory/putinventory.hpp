@@ -18,14 +18,14 @@ CONTRACT putinventory: public contract {
             : contract(receiver, code, ds) {
         }
 
-        ACTION insertkey(const name& owner, const uint64_t&  category_id, const string& key, const string& value);
-        ACTION updatekey(const name& owner, const uint64_t&  category_id, const string& key, const string& value);
-        ACTION rekey    (const name& owner, const uint64_t&  category_id, const string& key, const string& new_key);
-        ACTION deletekey(const name& owner, const uint64_t&  category_id, const string& key);
+        ACTION insertkey(const name& owner, const uint16_t&  category_id, const string& key, const string& value);
+        ACTION updatekey(const name& owner, const uint16_t&  category_id, const string& key, const string& value);
+        ACTION rekey    (const name& owner, const uint16_t&  category_id, const string& key, const string& new_key);
+        ACTION deletekey(const name& owner, const uint16_t&  category_id, const string& key);
 
         TABLE keyval {
             uint64_t  id;
-            uint32_t  category_id;
+            uint16_t  category_id;
             string    key;
             string    value;
 

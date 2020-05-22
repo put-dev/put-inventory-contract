@@ -1,6 +1,6 @@
 #include "putinventory.hpp"
 
-ACTION putinventory::insertkey(const name& owner, const uint64_t&  category_id, const string& key, const string& value)
+ACTION putinventory::insertkey(const name& owner, const uint16_t&  category_id, const string& key, const string& value)
 {
     require_auth( has_auth(owner) ? owner : _self );
     keyvals keyvalstable(_self, owner.value);
@@ -15,7 +15,7 @@ ACTION putinventory::insertkey(const name& owner, const uint64_t&  category_id, 
     });
 }
 
-ACTION putinventory::updatekey(const name& owner, const uint64_t&  category_id, const string& key, const string& value)
+ACTION putinventory::updatekey(const name& owner, const uint16_t&  category_id, const string& key, const string& value)
 {
     require_auth( owner );
     keyvals keyvalstable(_self, owner.value);
@@ -26,7 +26,7 @@ ACTION putinventory::updatekey(const name& owner, const uint64_t&  category_id, 
     });
 }
 
-ACTION putinventory::rekey(const name& owner, const uint64_t&  category_id, const string& key, const string& new_key)
+ACTION putinventory::rekey(const name& owner, const uint16_t&  category_id, const string& key, const string& new_key)
 {
     require_auth( owner );
     check(key != new_key, "cannot rekey to same key");
@@ -42,7 +42,7 @@ ACTION putinventory::rekey(const name& owner, const uint64_t&  category_id, cons
     });
 }
 
-ACTION putinventory::deletekey(const name& owner, const uint64_t&  category_id, const string& key)
+ACTION putinventory::deletekey(const name& owner, const uint16_t&  category_id, const string& key)
 {
     require_auth( owner );
     keyvals keyvalstable(_self, owner.value);
