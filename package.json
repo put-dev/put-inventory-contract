@@ -19,7 +19,7 @@
     "dockerator": "^0.3.6",
     "dotenv": "^8.2.0",
     "eosjs": "^20.0.3",
-    "dfuseup": "operanditech/dfuseup",
+    "dfuseup": "git://github.com/operanditech/dfuseup.git#d6276f107a5d29d1ca1cfd0c742232963b4e8e75",
     "config": "^3.2.5",
     "node-fetch": "^2.6.0",
     "node-persist": "3.0.5"
