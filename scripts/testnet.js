@@ -64,7 +64,7 @@ async function main() {
     proxies['eosio.token'] = await ContractProxy(dfuseUp.morph.eos, 'eosio.token');
     proxies[putContract] = await ContractProxy(dfuseUp.morph.eos, putContract);
 
-    await dfuseUp.createAccount('putcopayment', pubKey)
+    await dfuseUp.createAccount('putcopayment', config.get('testnet.copayment_publickey'))
     await proxies['eosio.token'].issue({
         to: 'putcopayment', 
         quantity: '100000.0000 EOS', 

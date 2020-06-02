@@ -1,7 +1,8 @@
 {
     "testnet": {
         "privatekey": "5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr",
-        "publickey": "EOS69X3383RzBZj41k73CSjUNXM5MYGpnDxyPnWUKPEtYQmTBWz4D"
+        "publickey": "EOS69X3383RzBZj41k73CSjUNXM5MYGpnDxyPnWUKPEtYQmTBWz4D",
+        "copayment_publickey": "EOS6Gmv1981WL5QHfjtMJybF2zf9vUxuTsfGQcWXUu4xRoqEhFXfx"
     },
     "chains": {
         "eosmainnet": {
