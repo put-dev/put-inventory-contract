@@ -5,28 +5,8 @@ const config = require('config')
 const { TextDecoder, TextEncoder } = require('util')
 const { default: ScatterJS } = require('@scatterjs/core')
 const { default: ScatterEOS } = require('@scatterjs/eosjs2')
-const ContractProxy = require('../lib/ContractProxy')
 const helpers = require('../lib/helpers')
 global.fetch = fetch
-
-function parseNetworkFromConfig(config) {
-  const api = config.get(`chains.${config.get('chain.active')}.api`)
-  const urlObj = url.parse(api)
-  return {
-    protocol: urlObj.protocol,
-    host: urlObj.hostname,
-    port: urlObj.port || (urlObj.protocol === 'https' ? 443 : 80),
-    blockchain: config.get(`chains.${config.get('chain.active')}.type`),
-    chainId: config.get(`chains.${config.get('chain.active')}.chainId`)
-  }
-}
-
-async function hasAuthority(rpc, account, authName) {
-  const auth = (await rpc.get_account(account)).permissions.find(
-    (p) => p.perm_name === authName
-  )
-  return !(!auth || auth.length === 0)
-}
 
 async function main() {
   console.log(`${new Date()} deploy NODE ENVIRONMENT: `, process.env.NODE_ENV)
@@ -49,9 +29,6 @@ async function main() {
   })
   const dfuseUp = new DfuseUp({ eos });
   const requiredFields = { accounts: [network] }
-
-  let proxies = {}
-  proxies['eosio'] = await ContractProxy(eos, 'eosio');
 
   //--------- handle contract part ---------
 

@@ -18,20 +18,20 @@ CONTRACT putinventory: public contract {
             : contract(receiver, code, ds) {
         }
 
-        ACTION insertkey(const name& owner, const uint16_t& bin_id, const string& key, const string& value);
-        ACTION updatekey(const name& owner, const uint16_t& bin_id, const string& key, const string& value);
-        ACTION rekey    (const name& owner, const uint16_t& bin_id, const string& key, const string& new_key);
-        ACTION deletekey(const name& owner, const uint16_t& bin_id, const string& key);
+        ACTION insertkey(const name& owner, const uint16_t& tag_id, const string& key, const string& value);
+        ACTION updatekey(const name& owner, const uint16_t& tag_id, const string& key, const string& value);
+        ACTION rekey    (const name& owner, const uint16_t& tag_id, const string& key, const string& new_key);
+        ACTION deletekey(const name& owner, const uint16_t& tag_id, const string& key);
 
         TABLE keyval {
             uint64_t  id;
-            uint16_t  bin_id;
+            uint16_t  tag_id;
             string    key;
             string    value;
 
             uint64_t primary_key()const { return id; }
             checksum256 get_checksum256_key()const {
-                return putinventory::get_checksum256_key(to_string(bin_id) + "-" + key);
+                return putinventory::get_checksum256_key(to_string(tag_id) + "-" + key);
             }
         };
 
