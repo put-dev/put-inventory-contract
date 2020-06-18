@@ -1,0 +1,6 @@
+{
+    "chain": {
+        "active": "eoskylinnet",
+        "contracts": ["putinventory"]
+    }
+}
