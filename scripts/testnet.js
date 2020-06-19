@@ -42,7 +42,14 @@ async function main() {
 
   await testnet.setup();
   testnet.loadExitHandler();
-  await testnet.start({ containerId });
+
+  try {
+    await testnet.start({ containerId });
+  } catch(e) {
+    console.log(e);
+    console.log("starting testnet from new container");
+    await testnet.start();
+  }
 
   if(!isNew) {
     return
