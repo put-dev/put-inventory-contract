@@ -46,9 +46,11 @@ async function main() {
   try {
     await testnet.start({ containerId });
   } catch(e) {
-    console.log(e);
+    console.log("container not found.")
     console.log("starting testnet from new container");
-    await testnet.start();
+    containerId = '';
+    isNew = true;
+    await testnet.start({ containerId });
   }
 
   if(!isNew) {
